@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS crew_actors (
     role_played VARCHAR(100),
     is_actress BOOLEAN NOT NULL,
     FOREIGN KEY (title_id) REFERENCES title_info(title_id),
-    FOREIGN KEY (person_id) REFERENCES person_info(person_id),
+    FOREIGN KEY (person_id) REFERENCES person_info(person_id)
 );
 
 CREATE TABLE IF NOT EXISTS crew_members (
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS crew_members (
     person_id VARCHAR(20),
     job VARCHAR(100),
     FOREIGN KEY (title_id) REFERENCES title_info(title_id),
-    FOREIGN KEY (person_id) REFERENCES person_info(person_id),
+    FOREIGN KEY (person_id) REFERENCES person_info(person_id)
 );
 
 CREATE TABLE IF NOT EXISTS title_episodes (

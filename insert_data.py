@@ -78,8 +78,10 @@ def process_tsv_file(file_path):
 def main():
     conn = connect_to_db()
     if conn:
+        print("Connected to database.")
         data = process_tsv_file(TSV_FILE_PATH)
         if data:
+            print("Data processed successfully.")
             insert_data_into_table(conn, data)
         conn.close()
 
