@@ -31,9 +31,8 @@ def parse_and_insert_tsv(file_path, db_params):
                 # Insert query
                 query = """
                 INSERT INTO local_titles (title_id, ordering, title, region, lang, types, attributes, is_original_title)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (title_id, ordering) DO NOTHING;
-                """
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+                                                """
                 cursor.execute(query, (title_id, ordering, title, region, lang, types, attributes, is_original_title))
 
         conn.commit()

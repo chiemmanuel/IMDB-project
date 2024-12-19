@@ -13,6 +13,7 @@ DB_PASSWORD = 'adminpass'
 TSV_FILE_PATH = './tsv/title.basics.tsv'
 
 
+
 # Function to transform '\N' to None and handle specific column transformations
 def transform_row(row):
     return {

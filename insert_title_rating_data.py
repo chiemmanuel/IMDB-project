@@ -13,6 +13,15 @@ def parse_and_insert_ratings_tsv(file_path, db_params):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
+    TITLE_IDS_FILE = './tsv/title_ids.txt'
+
+    title_ids = set()
+
+    # Read each line from the TITLE_IDS_FILE and append it to title_ids
+    with open(TITLE_IDS_FILE, mode="r", encoding="utf-8") as file:
+        for line in file:
+            title_ids.add(line.strip())
+
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             tsv_reader = csv.DictReader(file, delimiter='\t')
@@ -21,6 +30,8 @@ def parse_and_insert_ratings_tsv(file_path, db_params):
                 if i >= 100000:
                     break
                 title_id = row['tconst']
+                if title_id not in title_ids:
+                    continue
                 average_rating = float(row['averageRating'])
                 num_votes = int(row['numVotes'])
 
