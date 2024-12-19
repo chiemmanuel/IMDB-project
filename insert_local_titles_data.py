@@ -16,7 +16,9 @@ def parse_and_insert_tsv(file_path, db_params):
         with open(file_path, 'r', encoding='utf-8') as file:
             tsv_reader = csv.DictReader(file, delimiter='\t')
 
-            for row in tsv_reader:
+            for i, row in enumerate(tsv_reader):
+                if i >= 100000:
+                    break
                 title_id = row['titleId']
                 ordering = int(row['ordering'])
                 title = row['title']

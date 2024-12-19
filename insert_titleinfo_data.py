@@ -1,5 +1,6 @@
 import psycopg2
 import csv
+import time
 
 # Database connection parameters
 DB_HOST = 'localhost'
@@ -40,7 +41,9 @@ def insert_data():
             reader = csv.reader(file, delimiter="\t")
             next(reader)  # Skip the header row
 
-            for row in reader:
+            for i, row in enumerate(reader):
+                if i >= 100000:
+                    break
                 transformed = transform_row(row)
                 query = """
                     INSERT INTO title_info (
@@ -75,4 +78,6 @@ def insert_data():
             conn.close()
 
 if __name__ == "__main__":
+    start_time = time.time()
     insert_data()
+    print(f"Execution time: {time.time() - start_time} seconds.")
