@@ -56,7 +56,9 @@ def process_tsv_file(file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
             reader = csv.reader(file, delimiter='\t')
             next(reader)  # Skip header row
-            for row in reader:
+            for i, row in enumerate(reader):
+                if i >= 100000:
+                    break
                 person_id = row[0]
                 primary_name = row[1]
                 birth_year = int(row[2]) if row[2] != '\\N' else None
@@ -78,8 +80,10 @@ def process_tsv_file(file_path):
 def main():
     conn = connect_to_db()
     if conn:
+        print("Connected to database.")
         data = process_tsv_file(TSV_FILE_PATH)
         if data:
+            print("Data processed successfully.")
             insert_data_into_table(conn, data)
         conn.close()
 

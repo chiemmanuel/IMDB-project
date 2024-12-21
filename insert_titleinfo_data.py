@@ -1,6 +1,6 @@
 import psycopg2
 import csv
-import time  # Import time module to measure execution time
+import time
 
 # Database connection parameters
 DB_HOST = 'localhost'
@@ -11,6 +11,8 @@ DB_PASSWORD = 'adminpass'
 
 # File path to your TSV file
 TSV_FILE_PATH = './tsv/title.basics.tsv'
+
+
 
 # Function to transform '\N' to None and handle specific column transformations
 def transform_row(row):
@@ -44,11 +46,9 @@ def insert_data():
             reader = csv.reader(file, delimiter="\t")
             next(reader)  # Skip the header row
 
-            count = 0  # Track the number of rows inserted
-            for row in reader:
-                if count >= 100000:  # Stop after 10,000 entries
+            for i, row in enumerate(reader):
+                if i >= 100000:
                     break
-
                 transformed = transform_row(row)
                 query = """
                     INSERT INTO title_info (
@@ -90,4 +90,6 @@ def insert_data():
             conn.close()
 
 if __name__ == "__main__":
+    start_time = time.time()
     insert_data()
+    print(f"Execution time: {time.time() - start_time} seconds.")
