@@ -1,19 +1,19 @@
 CREATE TABLE IF NOT EXISTS title_info (
     title_id VARCHAR(20) PRIMARY KEY,
     title_type VARCHAR(20) NOT NULL,
-    primary_title VARCHAR(100),
-    original_title VARCHAR(100) NOT NULL,
+    primary_title VARCHAR(1000),
+    original_title VARCHAR(1000) NOT NULL,
     is_adult BOOLEAN NOT NULL,
     start_year INTEGER,
     end_year INTEGER,
-    runtime_minutes INTEGER CHECK (runtime_minutes > 0),
+    runtime_minutes INTEGER,
     genres TEXT ARRAY
 );
 
 CREATE TABLE IF NOT EXISTS local_titles (
     title_id VARCHAR(20) PRIMARY KEY,
     ordering INTEGER NOT NULL,
-    title VARCHAR(100) NOT NULL,
+    title VARCHAR(1000) NOT NULL,
     region VARCHAR(6),
     lang VARCHAR(6),
     types TEXT ARRAY,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS crew_actors (
     role_played VARCHAR(100),
     is_actress BOOLEAN NOT NULL,
     FOREIGN KEY (title_id) REFERENCES title_info(title_id),
-    FOREIGN KEY (person_id) REFERENCES person_info(person_id),
+    FOREIGN KEY (person_id) REFERENCES person_info(person_id)
 );
 
 CREATE TABLE IF NOT EXISTS crew_members (
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS crew_members (
     person_id VARCHAR(20),
     job VARCHAR(100),
     FOREIGN KEY (title_id) REFERENCES title_info(title_id),
-    FOREIGN KEY (person_id) REFERENCES person_info(person_id),
+    FOREIGN KEY (person_id) REFERENCES person_info(person_id)
 );
 
 CREATE TABLE IF NOT EXISTS title_episodes (
