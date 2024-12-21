@@ -1,7 +1,6 @@
 import psycopg2
 import csv
 import time
-import sys  # Import sys to handle CSV field size limit
 
 def parse_and_insert_tsv(file_path, db_params):
     """
@@ -12,8 +11,8 @@ def parse_and_insert_tsv(file_path, db_params):
         file_path (str): Path to the TSV file.
         db_params (dict): Database connection parameters.
     """
-    # Set CSV field size limit
-    csv.field_size_limit(sys.maxsize)
+    # Set a large but manageable CSV field size limit
+    csv.field_size_limit(10**9)
 
     # Database connection
     conn = psycopg2.connect(**db_params)
