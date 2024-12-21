@@ -1,6 +1,7 @@
 import psycopg2
 import csv
-import time  # Import time module to measure execution time
+import time
+import sys  # Import sys to handle CSV field size limit
 
 def parse_and_insert_tsv(file_path, db_params):
     """
@@ -11,6 +12,9 @@ def parse_and_insert_tsv(file_path, db_params):
         file_path (str): Path to the TSV file.
         db_params (dict): Database connection parameters.
     """
+    # Set CSV field size limit
+    csv.field_size_limit(sys.maxsize)
+
     # Database connection
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
@@ -27,18 +31,25 @@ def parse_and_insert_tsv(file_path, db_params):
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             tsv_reader = csv.DictReader(file, delimiter='\t')
-            
-            # Initialize the row counter and start the timer
+
+            # Initialize variables for batching and performance tracking
+            rows_to_insert = []
+            batch_size = 1000  # Number of rows per batch
             row_count = 0
             start_time = time.time()
 
+            # Query for insertion
+            query = """
+            INSERT INTO local_titles (title_id, ordering, title, region, lang, types, attributes, is_original_title)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+            """
+
             # Step 3: Iterate over the rows in the TSV file
-            for i, row in enumerate(tsv_reader):
+            for row in tsv_reader:
                 title_id = row['titleId']
 
-                # If the title_id is in title_ids.txt, insert the row
+                # If the title_id is in title_ids.txt, prepare the row for insertion
                 if title_id in title_ids:
-                    # Extract the relevant fields
                     ordering = int(row['ordering'])
                     title = row['title']
                     region = row['region'] if row['region'] != '\\N' else None
@@ -47,24 +58,28 @@ def parse_and_insert_tsv(file_path, db_params):
                     attributes = row['attributes'].split(',') if row['attributes'] != '\\N' else []
                     is_original_title = bool(int(row['isOriginalTitle']))
 
-                    # Insert query
-                    query = """
-                    INSERT INTO local_titles (title_id, ordering, title, region, lang, types, attributes, is_original_title)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
-                    """
-                    cursor.execute(query, (title_id, ordering, title, region, lang, types, attributes, is_original_title))
-                    row_count += 1  # Increment the row counter
+                    # Append the row data as a tuple to the batch
+                    rows_to_insert.append((title_id, ordering, title, region, lang, types, attributes, is_original_title))
+                    row_count += 1
 
-        # Commit the transaction
-        conn.commit()
+                # Execute the batch insert when batch size is reached
+                if len(rows_to_insert) == batch_size:
+                    cursor.executemany(query, rows_to_insert)
+                    conn.commit()
+                    rows_to_insert = []  # Clear the batch
 
-        # Measure the elapsed time
-        end_time = time.time()
-        elapsed_time = end_time - start_time
+            # Insert any remaining rows
+            if rows_to_insert:
+                cursor.executemany(query, rows_to_insert)
+                conn.commit()
 
-        # Output the results
-        print(f"Data inserted successfully. Processed {row_count} rows.")
-        print(f"Time taken for insertion: {elapsed_time:.2f} seconds.")
+            # Measure the elapsed time
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+
+            # Output the results
+            print(f"Data inserted successfully. Processed {row_count} rows.")
+            print(f"Time taken for insertion: {elapsed_time:.2f} seconds.")
 
     except Exception as e:
         # If there's an error, roll back the transaction
