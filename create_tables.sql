@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS title_info (
 );
 
 CREATE TABLE IF NOT EXISTS local_titles (
-    title_id VARCHAR(20) PRIMARY KEY,
+    title_id VARCHAR(20),
     ordering INTEGER NOT NULL,
     title VARCHAR(1000) NOT NULL,
     region VARCHAR(10),

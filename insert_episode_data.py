@@ -14,9 +14,9 @@ TSV_FILE_PATH = './tsv/title.episode.tsv'
 
 TITLE_IDS_FILE = './tsv/title_ids.txt'
 
+# Read each line from the TITLE_IDS_FILE and append it to title_ids
 title_ids = set()
 
-# Read each line from the TITLE_IDS_FILE and append it to title_ids
 with open(TITLE_IDS_FILE, mode="r", encoding="utf-8") as file:
     for line in file:
         title_ids.add(line.strip())
@@ -50,27 +50,25 @@ def insert_data():
 
             count = 0  # Track the number of rows inserted
             for row in reader:
-                if count >= 100000:  # Stop after 100,000 entries for testing
-                    break
-
                 transformed = transform_row(row)
-                if transformed["parent_title_id"] not in title_ids:
-                    continue
-                query = """
-                    INSERT INTO title_episodes (
-                        episode_id, parent_title_id, season_number, episode_number
-                    )
-                    VALUES (%s, %s, %s, %s)
-                    ON CONFLICT (episode_id) DO NOTHING;
-                """
-                cursor.execute(query, (
-                    transformed["episode_id"],
-                    transformed["parent_title_id"],
-                    transformed["season_number"],
-                    transformed["episode_number"]
-                ))
 
-                count += 1
+                # Check if the parent_title_id is in the title_ids set
+                if transformed["parent_title_id"] in title_ids:
+                    query = """
+                        INSERT INTO title_episodes (
+                            episode_id, parent_title_id, season_number, episode_number
+                        )
+                        VALUES (%s, %s, %s, %s)
+                        ON CONFLICT (episode_id) DO NOTHING;
+                    """
+                    cursor.execute(query, (
+                        transformed["episode_id"],
+                        transformed["parent_title_id"],
+                        transformed["season_number"],
+                        transformed["episode_number"]
+                    ))
+
+                    count += 1
 
         # Commit the transaction
         conn.commit()

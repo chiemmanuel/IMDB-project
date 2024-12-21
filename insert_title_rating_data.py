@@ -1,5 +1,6 @@
 import psycopg2
 import csv
+import time
 
 def parse_and_insert_ratings_tsv(file_path, db_params):
     """
@@ -26,6 +27,9 @@ def parse_and_insert_ratings_tsv(file_path, db_params):
         with open(file_path, 'r', encoding='utf-8') as file:
             tsv_reader = csv.DictReader(file, delimiter='\t')
 
+            row_count = 0  # Initialize a counter for the number of rows inserted
+            start_time = time.time()  # Start the timer
+
             for i, row in enumerate(tsv_reader):
                 if i >= 100000:
                     break
@@ -44,9 +48,16 @@ def parse_and_insert_ratings_tsv(file_path, db_params):
                     num_votes = EXCLUDED.num_votes;
                 """
                 cursor.execute(query, (title_id, average_rating, num_votes))
+                row_count += 1  # Increment row counter
 
         conn.commit()
-        print("Data inserted successfully.")
+
+        # Stop the timer and calculate elapsed time
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+
+        print(f"Data inserted successfully. {row_count} rows inserted.")
+        print(f"Time taken for insertion: {elapsed_time:.2f} seconds.")
 
     except Exception as e:
         conn.rollback()

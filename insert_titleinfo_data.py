@@ -35,11 +35,7 @@ def insert_data():
         conn = psycopg2.connect(
             host=DB_HOST, port=DB_PORT, dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD
         )
-        print("Connected to the database.")
         cursor = conn.cursor()
-
-        # Measure the start time
-        start_time = time.time()
 
         # Open the TSV file
         with open(TSV_FILE_PATH, mode="r", encoding="utf-8") as file:
@@ -70,16 +66,9 @@ def insert_data():
                     transformed["genres"],
                 ))
 
-                count += 1
-
         # Commit the transaction
         conn.commit()
-
-        # Measure the end time and calculate elapsed time
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(f"First {count} entries successfully inserted into the title_info table.")
-        print(f"Time taken for insertion: {elapsed_time:.2f} seconds.")
+        print("Data successfully inserted into the title_info table.")
 
     except Exception as e:
         print(f"An error occurred: {e}")
