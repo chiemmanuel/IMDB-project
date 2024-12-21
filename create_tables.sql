@@ -60,8 +60,8 @@ CREATE TABLE IF NOT EXISTS crew_members (
 CREATE TABLE IF NOT EXISTS title_episodes (
     episode_id VARCHAR(20) PRIMARY KEY,
     parent_title_id VARCHAR(20),
-    season_number INTEGER NOT NULL,
-    episode_number INTEGER NOT NULL,
+    season_number INTEGER,
+    episode_number INTEGER,
     FOREIGN KEY (parent_title_id) REFERENCES title_info(title_id)
 );
 
