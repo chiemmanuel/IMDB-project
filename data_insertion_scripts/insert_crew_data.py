@@ -3,7 +3,7 @@ import csv
 import time
 import os
 
-DB_HOST = os.getenv('DB_HOST', 'localhost')  # Default to localhost for local testing
+DB_HOST = os.getenv('DB_HOST', 'localhost') 
 DB_PORT = os.getenv('DB_PORT', '5432')  # Default PostgreSQL port
 DB_NAME = os.getenv('DB_NAME', 'IMDB')  # Your database name
 DB_USER = os.getenv('DB_USER', 'admin')  # Database username
