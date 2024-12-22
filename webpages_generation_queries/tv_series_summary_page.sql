@@ -5,7 +5,7 @@ WITH series_base AS (
         ti.original_title,
         ti.start_year AS "Release Year",
         ti.end_year AS "End Year",
-        COALESCE(ti.end_year, EXTRACT(YEAR FROM CURRENT_DATE)) - ti.start_year AS "Series Length (Years)",
+        COALESCE(ti.end_year, EXTRACT(YEAR FROM CURRENT_DATE)) - ti.start_year AS "Series Length (Years)", -- COALESCE is used to replace NULL values with the current year
         ti.runtime_minutes AS "Runtime (minutes) per episode"
     FROM title_info ti
     WHERE ti.title_type = 'tvSeries'

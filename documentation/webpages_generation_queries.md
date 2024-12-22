@@ -58,3 +58,17 @@ This query is used to generate a summary page for movies. It aggregates data fro
 
 ### Final Query:
 The final SELECT statement combines the data from the CTEs to produce a summary for each movie, including the original title, release year, runtime, average rating, number of votes, directors, writers, and the main cast. The results are ordered by the original title and limited to 100 movies for testing purposes.
+
+## [tv_series_summary_page.sql](../webpages_generation_queries/tv_series_summary_page.sql)
+
+This query is used to fetch data for the TV series summary page.
+
+### CTEs:
+- `tv_series_base`: Filters and selects the base information for TV series, including title, release year, end year, series length in years, and runtime
+- `series_ratings`: Aggregates the average rating and number of votes for each TV series from the title_ratings table
+- `series_seaons`: Returns the number of seasons for each TV series
+- `main_cast`: Aggregates the names of the main cast members for each TV series from the crew_actors table
+
+### Final Query:
+The final SELECT statement combines the data from the CTEs to produce a summary for each TV series, including the original title, release year, end year, series length, runtime, average rating, number of votes, number of seasons, and the main cast. The results are ordered by the original title and limited to 100 TV series for testing purposes.
+
