@@ -1,18 +1,19 @@
 import psycopg2
 import csv
-import time  # Import time module to measure execution time
+import time
+import os
 
 # Database connection parameters
-DB_HOST = 'localhost'
-DB_PORT = '5432'
-DB_NAME = 'IMDB'
-DB_USER = 'admin'
-DB_PASSWORD = 'adminpass'
+DB_HOST = os.getenv('DB_HOST', 'localhost')  # Default to localhost for local testing
+DB_PORT = os.getenv('DB_PORT', '5432')  # Default PostgreSQL port
+DB_NAME = os.getenv('DB_NAME', 'IMDB')  # Your database name
+DB_USER = os.getenv('DB_USER', 'admin')  # Database username
+DB_PASSWORD = os.getenv('DB_PASSWORD', 'adminpass') # Database password
 
 # File path to your TSV file
-TSV_FILE_PATH = './tsv/title.episode.tsv'
+TSV_FILE_PATH = '../tsv/title.episode.tsv'
 
-TITLE_IDS_FILE = './tsv/title_ids.txt'
+TITLE_IDS_FILE = '../tsv/title_ids.txt'
 
 # Read each line from the TITLE_IDS_FILE and append it to title_ids
 title_ids = set()

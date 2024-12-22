@@ -1,6 +1,7 @@
 import psycopg2
 import csv
 import time
+import os
 
 def parse_and_insert_tsv(file_path, db_params):
     """
@@ -18,7 +19,7 @@ def parse_and_insert_tsv(file_path, db_params):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
-    TITLE_IDS_FILE = './tsv/title_ids.txt'
+    TITLE_IDS_FILE = '../tsv/title_ids.txt'
 
     # Step 1: Read all the title IDs from the title_ids.txt file
     title_ids = set()
@@ -92,15 +93,15 @@ def parse_and_insert_tsv(file_path, db_params):
 
 if __name__ == "__main__":
     # Path to the TSV file
-    file_path = "./tsv/title.akas.tsv"
+    file_path = "../tsv/title.akas.tsv"
 
     # Database connection parameters
     db_params = {
-        'dbname': 'IMDB',
-        'user': 'admin',
-        'password': 'adminpass',
-        'host': 'localhost',
-        'port': '5432'
+        'dbname': os.getenv('DB_NAME', 'IMDB'),
+        'user': os.getenv('DB_USER', 'admin'),
+        'password': os.getenv('DB_PASSWORD', 'adminpass'),
+        'host': os.getenv('DB_HOST', 'localhost'),
+        'port': os.getenv('DB_PORT', '5432')
     }
 
     # Call the function to parse and insert data

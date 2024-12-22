@@ -64,8 +64,3 @@ CREATE TABLE IF NOT EXISTS title_episodes (
     episode_number INTEGER,
     FOREIGN KEY (parent_title_id) REFERENCES title_info(title_id)
 );
-
-
-
-
-

@@ -1,1 +1,0 @@
--- Movie details page with alternatve titles, production details and full technical details
