@@ -6,7 +6,7 @@ FROM title_episodes te
 JOIN title_info ep_ti ON ep_ti.title_id = te.episode_id
 JOIN title_ratings ep_tr ON ep_tr.title_id = te.episode_id
 JOIN title_info parent_ti ON parent_ti.title_id = te.parent_title_id
-WHERE te.episode_id = 'tt0041951';
+WHERE te.episode_id = 'tt0041951'; -- episode_id for the episode you want to get details for
 
 SELECT * FROM local_titles
 WHERE title_id = 'tt0041951'
