@@ -32,3 +32,29 @@ This query fetches the writers & directors for a given episode by joining the cr
 
 ### Query to fetch guest stars for a given episode ID
 As guest star is not a standard role in the IMDB dataset, I instead chose to determine guest stars as actors who only appear in a single episode of a given series. I find these actors by filtering out actors who appear in any title that shares the same parent title ID as the given episode, but are not the given episode itself.
+
+## [movie_detail_page.sql](../webpages_generation_queries/movie_detail_page.sql)
+
+This query is used to generate detailed information for a specific movie or a set of movies. It uses several Common Table Expressions (CTEs) to gather and aggregate data from different tables. The main components of the query are:
+
+### CTEs:
+- `movie_base`: Filters and selects the base information for movies.
+- `alternative_titles`: Gathers all alternative titles for the selected movies in JSONB format.
+- `production_details`: Returns all crew members in each movie and their roles in JSONB format.
+- `cast_details`: Returns all actors in each movie and the character they play in JSONB format.
+
+### Final Query:
+The final SELECT statement combines the data from the CTEs to produce a comprehensive set of details for each movie, including original title, primary title, release year, adult content flag, genres, runtime, alternative titles, production details, and cast details. The results are grouped and ordered by the original title.
+
+## [movie_summary_page.sql](../webpages_generation_queries/movie_summary_page.sql)
+
+This query is used to generate a summary page for movies. It aggregates data from the title_info, title_ratings, person_info, crew_actors and crew_members tables into four seperate CTEs:
+
+### CTEs:
+- `movie_base`: Filters and selects the base information for movies, including title, release year, runtime, average rating, and number of votes.
+- `directors`: Aggregates the names of directors for each movie.
+- `writers`: Aggregates the names of writers for each movie.
+- `main_cast`: Aggregates the names of the main cast members for each movie.
+
+### Final Query:
+The final SELECT statement combines the data from the CTEs to produce a summary for each movie, including the original title, release year, runtime, average rating, number of votes, directors, writers, and the main cast. The results are ordered by the original title and limited to 100 movies for testing purposes.

@@ -27,7 +27,7 @@ To optimize query performance, we have created indexes on the following columns:
 
 ### local_titles:
   - `title_id`
-  - `region, lang` (composite index)
+  - `region, lang`
 
 ### title_ratings:
   - `average_rating`
