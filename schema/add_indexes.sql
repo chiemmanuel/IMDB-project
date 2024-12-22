@@ -24,7 +24,8 @@ CREATE INDEX IF NOT EXISTS idx_crew_actors_title_id_ordering ON crew_actors(titl
 -- For crew_members table
 CREATE INDEX IF NOT EXISTS idx_crew_members_title_id ON crew_members(title_id);
 CREATE INDEX IF NOT EXISTS idx_crew_members_person_id ON crew_members(person_id);
-CREATE INDEX IF NOT EXISTS idx_crew_members_title_id_job ON crew_members(title_id, job);
+CREATE INDEX IF NOT EXISTS idx_crew_members_title_id_category ON crew_members(title_id, category);
+
 
 -- For title_episodes table
 CREATE INDEX IF NOT EXISTS idx_title_episodes_parent_title_id ON title_episodes(parent_title_id);

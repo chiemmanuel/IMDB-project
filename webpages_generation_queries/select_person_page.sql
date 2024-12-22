@@ -9,7 +9,7 @@ FROM title_info ti
 JOIN title_ratings tr 
 ON tr.title_id = ti.title_id
 WHERE ti.title_id IN (
-    SELECT unnest(known_for_titles) 
+    SELECT unnest(known_for_titles)
     FROM person_info 
     WHERE person_id = 'nm0103842'
 );
