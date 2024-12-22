@@ -2,8 +2,6 @@
 
 This document outlines the SQL queries used to generate the data for the different webpages of the IMDb website. The queries are categorized based on the webpage they are used to generate.
 
-
-
 ## [select_person_page.sql](../webpages_generation_queries/select_person_page.sql)
 
 The data for this page is fetched in four main queries, the first to select the basic person info, second the titles the person is known for, third the person's acting roles, and finally the person's non-acting roles. The queries are as follows:
@@ -21,10 +19,13 @@ This query fetches all the titles where the person is an actor, along with the a
 This query fetches all the titles where the person is a crew member, along with the category of their role (e.g., writer, director) and the average rating and number of votes for each title. It would be used to display a list of the person's non-acting credits.
 
 ## [select_episode_page.sql](../webpages_generation_queries/select_episode_page.sql)
-The data for this page is fetched in three main queries, one to fetch the overall information about the episode, one to fetch the writers & directors, and one to fetch the guest stars. The queries are as follows:
+The data for this page is fetched in four main queries, the first to fetch the overall information about the episode, second to fetch all localized titles for the episode, the third to fetch the writers & directors of the episode, and fourth to fetch the guest stars on that episode. The queries are as follows:
 
 ### Query to fetch episode-specific information for a given episode ID
 This main query fetches all the basic information related to a given episode, such as the parent's title & id, title, release year, runtime, genres, season number, episode number, average rating, and number of votes.
+
+### Query to fetch all localized titles for a given episode ID
+This query fetches all the localized titles for a given episode by simply selecting from the local_titles table where the title_id matches the given episode ID with the results ordered by the region.
 
 ### Query to fetch the writers & directors for a given episode ID
 This query fetches the writers & directors for a given episode by joining the crew_members table with the person_info table on the person_id field. It then filters the results based on the title_id and the category (writer or director) to get the desired information. The results are ordered by the category to separate the writers from the directors.

@@ -8,6 +8,10 @@ JOIN title_ratings ep_tr ON ep_tr.title_id = te.episode_id
 JOIN title_info parent_ti ON parent_ti.title_id = te.parent_title_id
 WHERE te.episode_id = 'tt0041951';
 
+SELECT * FROM local_titles
+WHERE title_id = 'tt0041951'
+ORDER BY region;
+
 SELECT cm.category, cm.person_id, pi.primary_name
 FROM crew_members cm
 JOIN person_info pi ON cm.person_id = pi.person_id
