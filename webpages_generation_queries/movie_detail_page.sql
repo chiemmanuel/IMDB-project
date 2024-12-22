@@ -1,11 +1,11 @@
-WITH movie_base AS (
+WITH movie_base AS ( -- CTE to filter which movies to get details for
     SELECT *
     FROM title_info
     WHERE title_type = 'movie'
     ORDER BY original_title
     LIMIT 10 OFFSET 0 -- Limiting to 10 movies for testing, can change to a  where id = 'tt1234567' to get a specific movie
 ),
-alternative_titles AS (
+alternative_titles AS ( -- CTE to get all alternative titles for the movies in jsonb format so that they can be aggregated into a single row
     SELECT DISTINCT ON (lt.title_id, lt.title, lt.region, lt.lang)
         lt.title_id,
         jsonb_build_object(
@@ -17,19 +17,19 @@ alternative_titles AS (
     FROM local_titles lt
     WHERE lt.title_id IN (SELECT title_id FROM movie_base)
 ),
-production_details AS (
-    SELECT DISTINCT ON (cm.title_id, cm.job, p.primary_name)
+production_details AS ( -- CTE to get all production details for the movies in jsonb format so that they can be aggregated into a single row
+    SELECT DISTINCT ON (cm.title_id, cm.category, p.primary_name)
         cm.title_id,
         CASE 
-            WHEN cm.job = 'director' THEN jsonb_build_object('role', 'Director', 'name', p.primary_name)
-            WHEN cm.job = 'writer' THEN jsonb_build_object('role', 'Writer', 'name', p.primary_name)
-            ELSE jsonb_build_object('role', cm.job, 'name', p.primary_name)
+            WHEN cm.category = 'director' THEN jsonb_build_object('role', 'Director', 'name', p.primary_name)
+            WHEN cm.category = 'writer' THEN jsonb_build_object('role', 'Writer', 'name', p.primary_name)
+            ELSE jsonb_build_object('role', cm.category, 'name', p.primary_name)
         END AS prod_detail
     FROM crew_members cm
     JOIN person_info p ON cm.person_id = p.person_id
     WHERE cm.title_id IN (SELECT title_id FROM movie_base)
 ),
-cast_details AS (
+cast_details AS ( -- CTE to get all cast details for the movies in jsonb format so that they can be aggregated into a single row
     SELECT DISTINCT ON (ca.title_id, ca.role_played, p2.primary_name)
         ca.title_id,
         jsonb_build_object(
@@ -42,7 +42,7 @@ cast_details AS (
     WHERE ca.title_id IN (SELECT title_id FROM movie_base)
 )
 
-SELECT 
+SELECT  -- Final query to get all details for the movies
     mb.original_title AS "Original Title",
     mb.primary_title AS "Primary Title",
     mb.start_year AS "Release Year",

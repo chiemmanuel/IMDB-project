@@ -30,7 +30,7 @@ JOIN
     title_episodes te ON te.episode_id = ca.title_id
 WHERE 
     ca.title_id = 'tt0041951'
-    AND NOT EXISTS (
+    AND NOT EXISTS ( -- Exclude actors who appear in other episodes of the same series
         SELECT 1
         FROM crew_actors other_ca
         JOIN title_episodes other_te ON other_te.episode_id = other_ca.title_id
