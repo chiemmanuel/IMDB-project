@@ -1,7 +1,7 @@
 # IMDB-project
 
 ## Project Summary
-This is Travis Berthrong & Junior Chi Emmanuel's submission for the final project. The sql files for the database structure and the webpages generation queries are in the respective folders. The data analysis scripts are in the data_analysis folder. The documentation folder contains the markdown files for the database schema, webpages generation queries, and data analysis.
+This is Junior Chi Emmanuel Travis Berthrong's IMDB project. The sql files for the database structure and the webpages generation queries are in the respective folders. The data analysis scripts are in the data_analysis folder. The documentation folder contains the markdown files for the database schema, webpages generation queries, and data analysis.
 
 ## Team Members
 - Junior Chi Emmanuel Ngu
