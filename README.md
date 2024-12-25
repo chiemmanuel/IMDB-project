@@ -4,8 +4,8 @@
 This is Travis Berthrong & Junior Chi Emmanuel's submission for the final project. The sql files for the database structure and the webpages generation queries are in the respective folders. The data analysis scripts are in the data_analysis folder. The documentation folder contains the markdown files for the database schema, webpages generation queries, and data analysis.
 
 ## Team Members
-- Travis Berthrong
 - Junior Chi Emmanuel Ngu
+- Travis Berthrong
 
 ## Running the Project
 1. Clone the repository.
